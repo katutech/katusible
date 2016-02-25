@@ -1,0 +1,2 @@
+# katusible
+for CentOS6
