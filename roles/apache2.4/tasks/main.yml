@@ -1,0 +1,52 @@
+- name: install packages
+  yum: name={{item}} state=installed
+  with_items:
+   - libtool
+   - libtool-ltdl-devel
+   - openssl-devel
+   - pcre-devel
+   - pcre
+
+- name: tar apr
+  unarchive: src={{ apr_package_name }}.tar.gz dest={{src_dir}}/
+
+- name: configure
+  command: chdir={{src_dir}}/{{ apr_package_name }} ./configure
+
+- name: make
+  command: chdir={{src_dir}}/{{ apr_package_name }} make
+
+- name: make install
+  command: chdir={{src_dir}}/{{ apr_package_name }} make install
+
+- name: tar apr_util
+  unarchive: src={{ apr_util_package_name }}.tar.gz dest={{src_dir}}/
+
+- name: configure
+  command: chdir={{src_dir}}/{{ apr_util_package_name }} ./configure --with-apr=/usr/local/apr
+
+- name: make
+  command: chdir={{src_dir}}/{{ apr_util_package_name }} make
+
+- name: make install
+  command: chdir={{src_dir}}/{{ apr_util_package_name }} make install
+
+
+- name: tar apache
+  unarchive: src={{ apache_package_name }}.tar.gz dest={{src_dir}}/
+
+- name: configure
+  command: chdir={{src_dir}}/{{ apache_package_name }} ./configure --prefix=/usr/local/apache2 --with-apr=/usr/local/apr --with-apr_util=/usr/local/apr --enable-ssl --enable-rewrite --enable-so
+
+- name: make
+  command: chdir={{src_dir}}/{{ apache_package_name }} make
+
+- name: make install
+  command: chdir={{src_dir}}/{{ apache_package_name }} make install
+
+- name: ldconfig
+  command: ldconfig
+
+- name: apache link
+  file: src=/usr/local/apache2 dest=/apache state=link
+

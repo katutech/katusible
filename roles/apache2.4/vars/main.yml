@@ -1,0 +1,10 @@
+apache_base_version: 2.4
+apache_version: "{{ apache_base_version }}.18"
+apache_package_name: httpd-{{ apache_version }}
+apr: 1.5
+apr_version: "{{ apr }}.2"
+apr_package_name: apr-{{ apr_version }}
+apr_util: 1.5
+apr_util_version: "{{ apr_util }}.4"
+apr_util_package_name: apr-util-{{ apr_util_version }}
+

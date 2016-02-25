@@ -1,0 +1,8 @@
+- name: ansible
+  hosts: targets
+  user: root
+  roles:
+#    - apache2.4
+#    - mysql5.6.27
+#    - mysql5.6.28_client
+
