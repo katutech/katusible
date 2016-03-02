@@ -1,0 +1,7 @@
+mysql_base_version: 5.6
+mysql_version: "{{ mysql_base_version }}.28-2"
+mysql_package_common: "mysql-community-common-{{ mysql_version }}.el6.x86_64"
+mysql_package_lib: "mysql-community-libs-{{ mysql_version }}.el6.x86_64"
+mysql_package_libs_compat: "mysql-community-libs-compat-{{ mysql_version }}.el6.x86_64"
+mysql_package_devel: "mysql-community-devel-{{ mysql_version }}.el6.x86_64"
+mysql_package_client: "mysql-community-client-{{ mysql_version }}.el6.x86_64"
