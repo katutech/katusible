@@ -1,0 +1,46 @@
+- stat: path={{ prefix_dir }}/mysql
+  register: is_mysql
+
+- name: end if mysql is found.
+  fail: msg='mysql is found'
+  when: is_mysql.stat.exists
+
+- name: install packages
+  yum: name={{item}} state=installed
+  with_items:
+   - libaio
+
+- name: mysql download
+  get_url: url="{{ dl_url }}" dest="{{ prefix_dir }}"
+
+- name: unarchive src
+  command: tar zxvf {{ mysql_package_name }}.tar.gz chdir="{{ prefix_dir }}"
+
+- name: mv 
+  shell:  mv "{{ prefix_dir }}"/"{{ mysql_package_name }}" "{{ prefix_dir }}"/mysql"{{ mysql_version }}"
+
+- name: group add
+  group: name=mysql state=present
+
+- name: user add
+  user: name=mysql  state=present group=mysql createhome=no
+
+- name: create mysql link
+  file: src="{{ prefix_dir }}"/mysql"{{ mysql_version }}" dest="{{ prefix_dir }}"/mysql owner=mysql group=mysql state=link
+
+- name: change dir and file permission
+  file: path="{{ prefix_dir }}"/mysql"{{ mysql_version }}" owner=mysql group=mysql recurse=yes
+
+- name: install_db
+  shell: chdir={{ prefix_dir }}/mysql{{ mysql_version }} ./scripts/mysql_install_db --basedir="{{ prefix_dir }}"/mysql"{{ mysql_version }}" --datadir="{{ prefix_dir }}"/mysql"{{ mysql_version }}"/data --user=mysql
+
+- name: mysqld_safe
+  shell: chdir=/ "{{ prefix_dir }}"/mysql"{{ mysql_version }}"/bin/mysqld_safe --user=mysql &
+
+- name: change dir and file permission
+  file: path="{{ prefix_dir }}"/mysql"{{ mysql_version }}" owner=mysql group=mysql recurse=yes 
+
+- name: create mysql.server link
+  file: src="{{ prefix_dir }}"/mysql"{{ mysql_version }}"/support-files/mysql.server dest=/etc/init.d/mysql.server state=link
+
+

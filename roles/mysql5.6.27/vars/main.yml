@@ -1,0 +1,4 @@
+mysql_base_version: 5.6
+mysql_version: "{{ mysql_base_version }}.27"
+mysql_package_name: mysql-{{ mysql_version }}-linux-glibc2.5-x86_64
+dl_url: "http://downloads.mysql.com/archives/get/file/mysql-5.6.27-linux-glibc2.5-x86_64.tar.gz"
